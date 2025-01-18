@@ -1,0 +1,272 @@
+64 件の結果 - 19 ファイル
+
+demo/mvnw:
+  201    cat >"$javaSource" <<-END
+  202: 	public class Downloader extends java.net.Authenticator
+  203  	{
+
+  207  	  }
+  208: 	  public static void main( String[] args ) throws Exception
+  209  	  {
+
+demo/.git/hooks/pre-rebase.sample:
+  69  		my $topic = $ARGV[0];
+  70: 		my $msg = "* $topic has commits already merged to public branch:\n";
+  71  		my (%not_in_next) = map {
+
+demo/src/main/java/com/example/demo/DemoApplication.java:
+  10  @ComponentScan(basePackages = "com.example.demo")
+  11: public class DemoApplication {
+  12  
+  13: 	public static void main(String[] args) {
+  14  		SpringApplication.run(DemoApplication.class, args);
+
+demo/src/main/java/com/example/demo/aspect/LoggingAspect.java:
+  11  @Aspect
+  12: public class LoggingAspect {
+  13    private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+
+  15    @Before("execution(* *..*Service.*(..))")
+  16:   public void startLog(JoinPoint jp) {
+  17      logger.debug("@Before : {}", jp.getSignature());
+
+  20    @AfterReturning(pointcut = "execution(* *..*Service.*(..))", returning = "ret")
+  21:   public void normalEndLog(JoinPoint jp, Object ret) {
+  22      logger.debug("@AfterReturning : {}", jp.getSignature() + " ret: " + ret);
+
+  25    @AfterThrowing(pointcut = "execution(* *..*Service.*(..))", throwing = "t")
+  26:   public void failureEndLog(JoinPoint jp, Throwable t) {
+  27      logger.debug("@AfterThrowing : {}", jp.getSignature() + " t: " + t);
+
+  30    @After("execution(* *..*Service.*(..))")
+  31:   public void completeLog(JoinPoint jp) {
+  32      logger.debug("@After : {}", jp.getSignature());
+
+  35    @Around("execution(* *..*Service.*(..))")
+  36:   public Object aroundLog(ProceedingJoinPoint jp) throws Throwable {
+  37      Object ret;
+
+demo/src/main/java/com/example/demo/config/SecurityConfig.java:
+  10  @EnableWebSecurity
+  11: public class SecurityConfig {
+  12  
+  13      @Bean
+  14:     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  15          http
+
+demo/src/main/java/com/example/demo/config/WebConfig.java:
+  13  @Configuration
+  14: public class WebConfig {
+  15  
+
+demo/src/main/java/com/example/demo/controller/CustomControllerAdvice.java:
+  13  @RestControllerAdvice // クラスレベルに@RestControllerAdvice(or @ControllerAdvice)を指定する
+  14: public class CustomControllerAdvice {
+  15  
+
+  18    @InitBinder
+  19:   public void initBinder(WebDataBinder dataBinder) {
+  20      logger.debug("initBinder : {}", dataBinder);
+
+  25    @ModelAttribute("trackingId")
+  26:   public String addOneObject(@RequestHeader("X-Tracking-Id") Optional<String> trackingId) {
+  27      logger.debug("addOneObject : {}", trackingId);
+
+  33    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  34:   public String handleSystemException(Exception e) {
+  35      // 例外ハンドリングを行う
+
+demo/src/main/java/com/example/demo/controller/CustomHandlerInterceptor.java:
+  10  
+  11: public class CustomHandlerInterceptor
+  12      implements HandlerInterceptor { // Spring 4.3.x利用者はHandlerInterceptorAdapterを継承するとよい
+
+  16    @Override
+  17:   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+  18      logger.debug("preHandle : {} {} {}" , request, request, handler);
+
+  26    @Override
+  27:   public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+  28      logger.debug("postHandle : {} {} {} {}" , request, response, handler, modelAndView);
+
+  33    @Override
+  34:   public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+  35      logger.debug("afterCompletion : {} {} {} {}" , request, response, handler, ex);
+
+demo/src/main/java/com/example/demo/controller/UserController.java:
+  12  @Controller
+  13: public class UserController {
+  14  
+
+  16  
+  17:     public UserController(UserService userService) {
+  18          this.userService = userService;
+
+  21      @GetMapping("/hello")
+  22:     public String hello() {
+  23          return "Hello, World!"; // 例としての挨拶
+
+  26      @GetMapping("/")
+  27:     public String index(Model model) {
+  28          // ユーザーリストを取得してモデルに追加
+
+demo/src/main/java/com/example/demo/entity/Users.java:
+   7  @Table(name = "users")
+   8: public class Users {
+   9  
+
+  23      // デフォルトコンストラクタ
+  24:     public Users() {
+  25          this.createdAt = LocalDateTime.now();
+
+  28      // コンストラクタ
+  29:     public Users(String name, String email) {
+  30          this.name = name;
+
+  35      // Getter and Setter
+  36:     public Long getId() {
+  37          return id;
+
+  39  
+  40:     public void setId(Long id) {
+  41          this.id = id;
+
+  43  
+  44:     public String getName() {
+  45          return name;
+
+  47  
+  48:     public void setName(String name) {
+  49          this.name = name;
+
+  51  
+  52:     public String getEmail() {
+  53          return email;
+
+  55  
+  56:     public void setEmail(String email) {
+  57          this.email = email;
+
+  59  
+  60:     public LocalDateTime getCreatedAt() {
+  61          return createdAt;
+
+  63  
+  64:     public void setCreatedAt(LocalDateTime createdAt) {
+  65          this.createdAt = createdAt;
+
+demo/src/main/java/com/example/demo/listener/MyRequestListener.java:
+   8  @WebListener
+   9: public class MyRequestListener implements ServletRequestListener {
+  10  
+  11      @Override
+  12:     public void requestInitialized(ServletRequestEvent sre) {
+  13          HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
+
+  18      @Override
+  19:     public void requestDestroyed(ServletRequestEvent sre) {
+  20          System.out.println("Request destroyed.");
+
+demo/src/main/java/com/example/demo/mapper/UserMapper.java:
+   9  @Repository
+  10: public interface UserMapper {
+  11      List<Users> findAll();
+
+demo/src/main/java/com/example/demo/service/GreetingService.java:
+   7  @Service
+   8: public class GreetingService {
+   9  
+
+  11  
+  12:   public String hello(String name, String trackingId) {
+  13      logger.debug("Hi {}.", name);
+
+demo/src/main/java/com/example/demo/service/UserService.java:
+  10  @Service
+  11: public class UserService {
+  12  
+
+  15  
+  16:     public List<Users> findAll() {
+  17          return userMapper.findAll();
+
+  19  
+  20:     public Users findById(Long id) {
+  21          return userMapper.findById(id);
+
+  23  
+  24:     public void save(Users user) {
+  25          if (user.getId() == null) {
+
+  31  
+  32:     public void delete(Long id) {
+  33          userMapper.delete(id);
+
+demo/src/main/java/com/example/demo/servlet/CustomFilter.java:
+   8  
+   9: public class CustomFilter implements Filter {
+  10  
+
+  13    @Override
+  14:   public void init(FilterConfig filterConfig) throws ServletException {
+  15      logger.debug("init : {}", filterConfig);
+
+  21    @Override
+  22:   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+  23      logger.debug("doFilter : {} {}", request, response);
+
+  35    @Override
+  36:   public void destroy() {
+  37      logger.debug("destroy");
+
+demo/src/main/java/com/example/demo/servlet/CustomFilterWithDI.java:
+  16  @Component // コンポーネントスキャン対象にしてDIコンテナに登録
+  17: public class CustomFilterWithDI extends GenericFilterBean { // GenericFilterBeanまたはGenericFilterBeanの子クラスを指定
+  18  
+
+  22  
+  23:   public CustomFilterWithDI(MessageSource messageSource) { // MessageSourceをインジェクション
+  24      this.systemName = messageSource.getMessage("system.name", null, "demo", Locale.getDefault());
+
+  34    @Override
+  35:   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+  36      logger.debug("{} : doFilter : {} {}", systemName, request, response);
+
+  48    @Override
+  49:   public void destroy() {
+  50      logger.debug("{} : destroy", systemName);
+
+demo/src/main/java/com/example/demo/servlet/CustomServletRequestListener.java:
+   8  
+   9: public class CustomServletRequestListener implements ServletRequestListener {
+  10  
+
+  13    @Override
+  14:   public void requestInitialized(ServletRequestEvent sre) {
+  15      logger.debug("requestInitialized : {}", sre);
+
+  20    @Override
+  21:   public void requestDestroyed(ServletRequestEvent sre) {
+  22      logger.debug("requestDestroyed : {}", sre);
+
+demo/src/main/java/com/example/demo/servlet/CustomServletRequestListenerWithDI.java:
+  12  @Component
+  13: public class CustomServletRequestListenerWithDI implements ServletRequestListener {
+  14  
+
+  18  
+  19:   public CustomServletRequestListenerWithDI(MessageSource messageSource) { // MessageSourceをインジェクション
+  20      this.systemName = messageSource.getMessage("system.name", null, "demo", Locale.getDefault());
+
+  23    @Override
+  24:   public void requestInitialized(ServletRequestEvent sre) {
+  25      logger.debug("{} : requestInitialized : {}", systemName, sre);
+
+  30    @Override
+  31:   public void requestDestroyed(ServletRequestEvent sre) {
+  32      logger.debug("{} : requestDestroyed : {}", systemName, sre);
+
+demo/src/main/resources/mapper/UserMapper.xml:
+  1  <?xml version="1.0" encoding="UTF-8"?>
+  2: <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  3      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
