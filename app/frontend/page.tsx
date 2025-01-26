@@ -1,13 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { exportToExcel } from "./actions"
+import axios from 'axios'
+
+// レスポンスの型を定義
+interface ApiResponse {
+  message: string;
+}
 
 export default function Home() {
   const [searchResults, setSearchResults] = useState("")
   const [error, setError] = useState("")
+  const [data, setData] = useState<ApiResponse | null>(null)  // 型を指定
 
   const handleExport = async () => {
     if (!searchResults.trim()) {
@@ -16,45 +22,29 @@ export default function Home() {
     }
 
     try {
-      await exportToExcel(searchResults)
-      setError("")
+      const response = await axios.post<ApiResponse>('http://localhost:5000/api/export', {
+        searchResults: searchResults
+      });
+
+      alert(response.data.message);  // これで型エラーが解消されます
+      setError("");
     } catch (err) {
-      setError("エクセル出力に失敗しました")
+      setError("エクセル出力に失敗しました");
     }
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-blue-500 h-10 flex items-center px-4">
-        <h1 className="text-white">VScode検索結果エクセル出力</h1>
-      </header>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<ApiResponse>("http://localhost:5000/api/data");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-      {/* Main Content */}
-      <main className="container mx-auto p-4">
-        <div className="max-w-3xl mx-auto space-y-8">
-          {/* Text Area */}
-          <div className="border rounded-md p-4">
-            <Textarea
-              placeholder="vscodeの検索結果を貼り付けてください"
-              className="min-h-[280px] resize-none"
-              value={searchResults}
-              onChange={(e) => setSearchResults(e.target.value)}
-            />
-          </div>
+    fetchData();
+  }, []);
 
-          {/* Error Message */}
-          {error && <p className="text-red-500">{error}</p>}
-
-          {/* Export Button */}
-          <div className="flex justify-end">
-            <Button onClick={handleExport} className="bg-green-500 hover:bg-green-600">
-              Excel出力
-            </Button>
-          </div>
-        </div>
-      </main>
-    </div>
-  )
+  // ... existing code ...
 }
-

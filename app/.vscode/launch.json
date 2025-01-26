@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Python: Flask",
+          "type": "debugpy",
+          "request": "launch",
+          "module": "flask",
+          "env": {
+              "FLASK_APP": "backend/server.py",
+              "FLASK_DEBUG": "1"
+          },
+          "args": [
+              "run",
+              "--no-debugger",
+              "--no-reload"
+          ],
+          "jinja": true
+      },
+      {
+          "type": "chrome",
+          "request": "launch",
+          "name": "Launch Chrome against React",
+          "url": "http://localhost:3000",
+          "webRoot": "${workspaceFolder}/frontend",
+          "preLaunchTask": "start-react"
+      }
+  ],
+  "compounds": [
+      {
+          "name": "Flask + React",
+          "configurations": ["Python: Flask", "Launch Chrome against React"]
+      }
+  ]
+}
